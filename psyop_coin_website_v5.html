@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Special+Elite&family=Oswald:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0800;
+    color: #c8b97a;
+    font-family: 'Special Elite', cursive;
+    overflow-x: hidden;
+  }
+
+  .grain {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 999; opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  }
+
+  .scanlines {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 998;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+  }
+
+  .ticker {
+    background: #1a0000;
+    border-top: 1px solid #8b0000;
+    border-bottom: 1px solid #8b0000;
+    padding: 8px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 30s linear infinite;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    color: #ff3333;
+    letter-spacing: 2px;
+  }
+
+  @keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+
+  .hero {
+    text-align: center;
+    padding: 70px 20px 60px;
+    border-bottom: 1px solid #3a3020;
+  }
+
+  .eye-container { width: 140px; height: 140px; margin: 0 auto 34px; }
+
+  .eye-svg { width: 140px; height: 140px; animation: pulse 3s ease-in-out infinite; }
+
+  @keyframes pulse {
+    0%, 100% { filter: drop-shadow(0 0 8px #c8b97a); opacity: 1; }
+    50% { filter: drop-shadow(0 0 28px #c8b97a); opacity: 0.85; }
+  }
+
+  .main-title {
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: clamp(52px, 12vw, 110px);
+    color: #c8b97a;
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(200,185,122,0.4);
+    letter-spacing: 2px;
+  }
+
+  .subtitle {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 8px;
+    color: #7a6a3a;
+    margin-top: 14px;
+    text-transform: uppercase;
+  }
+
+  .ticker-symbol {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(14px, 3.5vw, 22px);
+    color: #ff4444;
+    letter-spacing: 4px;
+    margin-top: 24px;
+    border: 1px solid #8b0000;
+    display: inline-block;
+    padding: 10px 28px;
+    animation: blink-border 2s ease-in-out infinite;
+  }
+
+  @keyframes blink-border {
+    0%, 100% { border-color: #8b0000; }
+    50% { border-color: #ff3333; box-shadow: 0 0 12px rgba(255,51,51,0.3); }
+  }
+
+  .manifesto { max-width: 860px; margin: 0 auto; padding: 60px 30px; border-bottom: 1px solid #3a3020; }
+
+  .section-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: #5a4a2a;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .truth-item {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 48px;
+    align-items: flex-start;
+    padding: 24px;
+    border: 1px solid #1a1500;
+    background: rgba(200,185,122,0.02);
+    transition: all 0.3s;
+  }
+
+  .truth-item:hover { border-color: #3a3020; background: rgba(200,185,122,0.04); }
+
+  .truth-num {
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: 52px;
+    color: #3a3020;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 60px;
+    text-align: center;
+  }
+
+  .truth-content h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #c8b97a;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .truth-content p { font-size: 15px; line-height: 1.8; color: #8a7a5a; }
+
+  .redacted { background: #c8b97a; color: #c8b97a; padding: 0 4px; transition: all 0.3s; cursor: pointer; }
+  .redacted:hover { background: transparent; color: #ff4444; }
+
+  .divider {
+    text-align: center;
+    padding: 30px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 8px;
+    color: #2a2010;
+    border-bottom: 1px solid #1a1500;
+  }
+
+  .tokenomics { max-width: 860px; margin: 0 auto; padding: 60px 30px; border-bottom: 1px solid #3a3020; }
+
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    border: 1px solid #2a2010;
+    margin-top: 40px;
+  }
+
+  .token-cell { padding: 24px 20px; border: 1px solid #1a1500; text-align: center; background: rgba(200,185,122,0.02); }
+  .token-cell .val { font-family: 'Oswald', sans-serif; font-size: 26px; font-weight: 700; color: #c8b97a; display: block; }
+  .token-cell .lbl { font-size: 11px; letter-spacing: 4px; color: #5a4a2a; text-transform: uppercase; margin-top: 6px; display: block; }
+
+  .cta-section { text-align: center; padding: 80px 30px; border-bottom: 1px solid #3a3020; }
+
+  .cta-heading { font-family: 'UnifrakturMaguntia', cursive; font-size: clamp(28px, 6vw, 52px); color: #c8b97a; margin-bottom: 16px; }
+
+  .cta-sub { font-size: 14px; color: #5a4a2a; letter-spacing: 3px; margin-bottom: 40px; font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+
+  .btn-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: #c8b97a; color: #0a0800; font-family: 'Oswald', sans-serif;
+    font-size: 14px; font-weight: 700; letter-spacing: 3px; padding: 16px 40px;
+    border: none; cursor: pointer; text-transform: uppercase; transition: all 0.2s;
+  }
+  .btn-primary:hover { background: #e8d99a; transform: scale(1.02); }
+
+  .btn-secondary {
+    background: transparent; color: #c8b97a; font-family: 'Oswald', sans-serif;
+    font-size: 14px; font-weight: 400; letter-spacing: 3px; padding: 16px 40px;
+    border: 1px solid #3a3020; cursor: pointer; text-transform: uppercase; transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: #c8b97a; color: #e8d99a; }
+
+  .footer { text-align: center; padding: 40px 20px; font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 4px; color: #2a2010; text-transform: uppercase; }
+  .footer span { color: #3a3020; }
+
+  .stamp {
+    display: inline-block; border: 3px solid #8b0000; color: #8b0000;
+    font-family: 'Oswald', sans-serif; font-size: clamp(28px, 6vw, 48px);
+    font-weight: 700; letter-spacing: 4px; padding: 10px 24px;
+    transform: rotate(-8deg); margin: 30px auto; opacity: 0.85; text-transform: uppercase;
+  }
+
+  .marquee-section { overflow: hidden; padding: 20px 0; border-top: 1px solid #1a1500; border-bottom: 1px solid #1a1500; background: #060500; }
+
+  .marquee-text {
+    display: inline-block; white-space: nowrap;
+    animation: marquee 20s linear infinite;
+    font-family: 'Oswald', sans-serif; font-size: 12px; letter-spacing: 6px; color: #2a2010; text-transform: uppercase;
+  }
+
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="scanlines"></div>
+
+<div class="ticker">
+  <span class="ticker-inner">
+    ⚠ BREAKING: MONEY IS NOT REAL &nbsp;•&nbsp; EVERYTHING IS A PSYOP &nbsp;•&nbsp; THE MEDIA CONTROLS THE NARRATIVE &nbsp;•&nbsp; WAKE UP &nbsp;•&nbsp; $PSYOP LIVE ON PUMP.FUN &nbsp;•&nbsp; IN PSYOPS WE TRUST &nbsp;•&nbsp; NOVUS ORDO SECLORUM &nbsp;•&nbsp; THEY CONTROL EVERYTHING &nbsp;•&nbsp; BUY $PSYOP &nbsp;•&nbsp; THE TRUTH IS THEIR GREATEST FEAR &nbsp;•&nbsp; VERITAS OCCULTA REGIT MUNDUM &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+</div>
+
+<section class="hero">
+  <div class="eye-container">
+    <svg class="eye-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="eyeglow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#c8b97a" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#c8b97a" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="60" cy="60" r="58" fill="url(#eyeglow)"/>
+      <polygon points="60,10 110,95 10,95" fill="none" stroke="#c8b97a" stroke-width="2"/>
+      <ellipse cx="60" cy="70" rx="18" ry="12" fill="none" stroke="#c8b97a" stroke-width="1.5"/>
+      <circle cx="60" cy="70" r="7" fill="#c8b97a" opacity="0.9"/>
+      <circle cx="60" cy="70" r="3" fill="#0a0800"/>
+      <line x1="60" y1="10" x2="60" y2="2" stroke="#c8b97a" stroke-width="1" opacity="0.4"/>
+      <line x1="60" y1="10" x2="50" y2="3" stroke="#c8b97a" stroke-width="0.8" opacity="0.3"/>
+      <line x1="60" y1="10" x2="70" y2="3" stroke="#c8b97a" stroke-width="0.8" opacity="0.3"/>
+      <line x1="60" y1="10" x2="40" y2="6" stroke="#c8b97a" stroke-width="0.6" opacity="0.2"/>
+      <line x1="60" y1="10" x2="80" y2="6" stroke="#c8b97a" stroke-width="0.6" opacity="0.2"/>
+    </svg>
+  </div>
+
+  <h1 class="main-title">$PSYOP</h1>
+  <p class="subtitle">you will buy this</p>
+  <div class="ticker-symbol">LIVE ON PUMP.FUN — BUY $PSYOP NOW</div>
+</section>
+
+<div class="marquee-section">
+  <div class="marquee-text">
+    THE TRUTH IS THEIR GREATEST FEAR &nbsp;&nbsp; • &nbsp;&nbsp; MONEY IS NOT REAL &nbsp;&nbsp; • &nbsp;&nbsp; EVERYTHING IS A PSYOP &nbsp;&nbsp; • &nbsp;&nbsp; THEY CONTROL THE NARRATIVE &nbsp;&nbsp; • &nbsp;&nbsp; WAKE UP &nbsp;&nbsp; • &nbsp;&nbsp; THE GAME IS RIGGED &nbsp;&nbsp; • &nbsp;&nbsp; IN PSYOPS WE TRUST &nbsp;&nbsp; • &nbsp;&nbsp; NOVUS ORDO SECLORUM &nbsp;&nbsp; • &nbsp;&nbsp; THE TRUTH IS THEIR GREATEST FEAR &nbsp;&nbsp; • &nbsp;&nbsp; MONEY IS NOT REAL &nbsp;&nbsp; • &nbsp;&nbsp; EVERYTHING IS A PSYOP &nbsp;&nbsp; • &nbsp;&nbsp; THEY CONTROL THE NARRATIVE &nbsp;&nbsp; • &nbsp;&nbsp; WAKE UP &nbsp;&nbsp; • &nbsp;&nbsp; THE GAME IS RIGGED &nbsp;&nbsp; • &nbsp;&nbsp; IN PSYOPS WE TRUST &nbsp;&nbsp; •
+  </div>
+</div>
+
+<section class="manifesto">
+  <p class="section-label">— Declassified Truths —</p>
+
+  <div class="truth-item">
+    <div class="truth-num">I</div>
+    <div class="truth-content">
+      <h3>Money Is Not Real</h3>
+      <p>Every dollar in your wallet is a <span class="redacted">Federal Psyop Note</span> — a belief system printed on cotton. They convinced you to trade your time, your life, your freedom for slips of paper backed by nothing. The financial system is a <span class="redacted">controlled illusion</span>. Always has been.</p>
+    </div>
+  </div>
+
+  <div class="truth-item">
+    <div class="truth-num">II</div>
+    <div class="truth-content">
+      <h3>The Government Is Corrupt</h3>
+      <p>The system was never built for you. It was built to keep you working, paying, consuming, and obeying. Every institution, every policy, every law — engineered from the top down to protect those who were never elected. <span class="redacted">The people in charge have always been in charge.</span></p>
+    </div>
+  </div>
+
+  <div class="truth-item">
+    <div class="truth-num">III</div>
+    <div class="truth-content">
+      <h3>The Media Controls Your Mind</h3>
+      <p>Breaking news. Outrage cycles. Celebrity scandals. Wars. Elections. Every major event is timed and broadcast to keep your eyes off the real game. <span class="redacted">They use spectacle as a weapon.</span> Big events are engineered distractions. To them it's strategy. To us it's our lives.</p>
+    </div>
+  </div>
+
+  <div class="truth-item">
+    <div class="truth-num">IV</div>
+    <div class="truth-content">
+      <h3>Everything Is A Psyop</h3>
+      <p>Religion. Politics. Sports. Pop culture. Social media. The economy. School. Work. Retirement. All of it — a carefully constructed game. To them it's moves on a board. To us it's our entire existence. <span class="redacted">Veritas Occulta Regit Mundum.</span> The truth, hidden, rules the world.</p>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top: 20px;">
+    <div class="stamp">WAKE UP</div>
+  </div>
+</section>
+
+<div class="divider">— • — MDCCLXXVI — • —</div>
+
+<section class="tokenomics">
+  <p class="section-label">— Tokenomics —</p>
+  <div class="token-grid">
+    <div class="token-cell"><span class="val">$PSYOP</span><span class="lbl">Ticker</span></div>
+    <div class="token-cell"><span class="val">1B</span><span class="lbl">Total Supply</span></div>
+    <div class="token-cell"><span class="val">0%</span><span class="lbl">Tax</span></div>
+    <div class="token-cell"><span class="val">PUMP.FUN</span><span class="lbl">Platform</span></div>
+    <div class="token-cell"><span class="val">RENOUNCED</span><span class="lbl">Contract</span></div>
+    <div class="token-cell"><span class="val">LIVE</span><span class="lbl">Status</span></div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2 class="cta-heading">They Control the Narrative.<br>You Control Your Bag.</h2>
+  <p class="cta-sub">Live now on Pump.Fun — The Federal Psyop Note</p>
+  <div class="btn-group">
+    <button class="btn-primary" onclick="alert('Head to pump.fun and search $PSYOP — Wake Up')">Buy $PSYOP Now</button>
+    <button class="btn-secondary">Join the Movement</button>
+  </div>
+</section>
+
+<div class="marquee-section">
+  <div class="marquee-text">
+    FEDERAL RESERVE PSYOP NOTE &nbsp;&nbsp; • &nbsp;&nbsp; ONE BILLION SUPPLY &nbsp;&nbsp; • &nbsp;&nbsp; NOVUS ORDO SECLORUM &nbsp;&nbsp; • &nbsp;&nbsp; IN PSYOPS WE TRUST &nbsp;&nbsp; • &nbsp;&nbsp; VERITAS OCCULTA REGIT MUNDUM &nbsp;&nbsp; • &nbsp;&nbsp; THEY CONTROL THE NARRATIVE &nbsp;&nbsp; • &nbsp;&nbsp; FEDERAL RESERVE PSYOP NOTE &nbsp;&nbsp; • &nbsp;&nbsp; ONE BILLION SUPPLY &nbsp;&nbsp; • &nbsp;&nbsp; NOVUS ORDO SECLORUM &nbsp;&nbsp; • &nbsp;&nbsp; IN PSYOPS WE TRUST &nbsp;&nbsp; • &nbsp;&nbsp; VERITAS OCCULTA REGIT MUNDUM &nbsp;&nbsp; • &nbsp;&nbsp; THEY CONTROL THE NARRATIVE &nbsp;&nbsp;
+  </div>
+</div>
+
+<footer class="footer">
+  <p>$PSYOP — you will buy this</p>
+  <p style="margin-top:8px;"><span>Not financial advice. Everything is a psyop. Including this.</span></p>
+</footer>
+
+</body>
+</html>

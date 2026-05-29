@@ -269,6 +269,12 @@
   <h1 class="main-title">$PSYOP</h1>
   <p class="subtitle">you will buy this</p>
   <div class="ticker-symbol">LIVE ON PUMP.FUN — BUY $PSYOP NOW</div>
+
+  <div class="ca-box" style="margin-top: 34px;">
+    <span class="ca-label">CA</span>
+    <span class="ca-addr">GqE997dy5n3VPx7Lj6T2aGwFTtQ6FxkR4WeNNpVRpump</span>
+    <button class="ca-copy" onclick="copyCA(this)">Copy</button>
+  </div>
 </section>
 
 <div class="marquee-section">
@@ -336,7 +342,7 @@
   <p class="cta-sub">Live now on Pump.Fun — The Federal Psyop Note</p>
   <div class="ca-box">
     <span class="ca-label">CA</span>
-    <span class="ca-addr" id="ca-addr">GqE997dy5n3VPx7Lj6T2aGwFTtQ6FxkR4WeNNpVRpump</span>
+    <span class="ca-addr">GqE997dy5n3VPx7Lj6T2aGwFTtQ6FxkR4WeNNpVRpump</span>
     <button class="ca-copy" onclick="copyCA(this)">Copy</button>
   </div>
   <div class="btn-group">
@@ -358,7 +364,7 @@
 
 <script>
   function copyCA(btn) {
-    var addr = document.getElementById('ca-addr').textContent.trim();
+    var addr = btn.parentNode.querySelector('.ca-addr').textContent.trim();
     navigator.clipboard.writeText(addr).then(function () {
       var original = btn.textContent;
       btn.textContent = 'Copied';
